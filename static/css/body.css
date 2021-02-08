@@ -1,0 +1,61 @@
+*{
+    margin: 0px !important;
+}
+body{
+    background-color: #1a1a1b;
+    scrollbar-width: none;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 5rem !important;
+    overflow: hidden;
+    height: 88vh;
+}
+.left{
+    flex: 0.25;
+    overflow: hidden;
+    border-right: 0.2px solid lightgray;
+}
+.middle{
+    flex: 0.45;
+    overflow-y: scroll;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.middle::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+.middle::-webkit-scrollbar-thumb {
+    background: #020202;
+}
+
+
+.right{
+    flex: 0.3;
+    overflow-y: scroll;
+    border-left: 0.2px solid lightgray;
+}
+.right::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+.right::-webkit-scrollbar-thumb {
+    background: #020202;
+}
+
+
+.toast{
+                    position: absolute;
+                    bottom: 5%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                    display: none;
+                    background-color: white;
+                    padding: 15px 20px;
+                    color: black;
+                    border-radius: 10px;
+                    z-index: 9999999;
+                }

@@ -1,0 +1,28 @@
+
+.left__bar{
+    padding: 10px 10px;
+    color: #fff;
+}
+.left__bar__item{
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+    flex-direction: row;
+    padding: 5px;
+}
+.left__bar__item:hover{
+    background-color:rgba(36, 35, 35, 0.863);
+}
+.left__bar__item > h6{
+    font-size: 18px;
+}
+.icon__left{
+    margin-right: 10px !important;
+}
+.line__left{
+    border-width: 0.000000002px !important;
+    border-color: rgb(226, 228, 226);
+    width: 60%;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}

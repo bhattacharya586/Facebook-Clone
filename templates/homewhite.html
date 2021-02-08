@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='/img/f-icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/left__bar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/body.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/right__bar.css') }}">
+    <link rel="stylesheet" href="/static/css/timeline.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbox.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <title>Facebook</title>
+
+    <style>
+        @media only screen and (max-width: 600px) {            
+            .navigation{
+                display: flex;
+                position: fixed;
+                width: 100%;
+                top:0;
+                left:0;
+                z-index: 22;
+                background-color: #1a1a1b;
+                color: #fff;
+                box-shadow: 0 4px 4px rgba(14, 13, 13, 0.5), inset 0 0 0 0 rgba(51, 51, 51, 0.5);
+                padding: 10px;
+            }
+            .header__logo__search{
+                flex:0.1;
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+            }
+            .text__logo{
+                display: none;
+            }
+            .logo__title{
+                font-weight: normal;
+                font-size: 20px;
+                padding: 10px;
+            }
+            .search__bar{
+                display: none;
+            }
+            
+            .header__links{
+                flex: 0.5;
+                display: flex;
+                text-align: center;
+                fill: #fff;
+                justify-content: space-evenly;
+            }
+            .nav__link{
+                padding-left: 15px;
+                padding-right: 15px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                cursor: pointer;
+            }
+            .active{
+                transition: 0.5s;
+                fill: rgb(51, 9, 240);
+                background-color: #363636ab;
+                padding-left: 15px;
+                padding-right: 15px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                border-radius: 5px;
+            }
+            .nav__link:hover{
+                transition: 0.5s;
+                fill: rgb(51, 9, 240);
+                background-color: #363636ab;
+                padding-left: 15px;
+                padding-right: 15px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                border-radius: 5px;
+            }
+            .profile__name > p, .msgone{
+                display: none;
+            }
+            .profile__caret{
+                justify-content: flex-end;
+            }
+            .container{
+                display: flex;
+            }
+            .left ,.right{
+                display: none;
+            }
+            .middle{
+                flex: 1;
+                width: 100%;
+                padding: 10px;
+                text-align: center;
+            }
+            .post__man{
+                margin-top: 1rem !important; 
+                margin-bottom: 1rem !important;
+                border-radius: 8px;
+                background-color: #18191A;
+                padding: 20px;
+                color: #fff;
+                /* position: sticky;
+                top: 0px; */
+                box-shadow: 5px 5px 5px rgba(12, 12, 12, 0.5), 5px 5px 5px rgba(17, 17, 17, 0.5);
+            }
+            .post__sender{
+                display: flex;
+                flex-direction: row;
+            }
+            .input__btn{
+                width: 300px !important;
+                background-color: #111111;
+                color: white;
+                font-size: 18px;
+                padding:10px 15px;
+                outline: none;
+                border: 1px solid black;
+                border-radius: 10rem;
+            }
+            .top__lnk__{
+                font-size: 30px;
+            }
+            .text-hde{
+                display: none;
+            }
+                        
+            .sign__in__register{
+                margin-top: 1rem !important; 
+                margin-bottom: 1rem !important;
+                border-radius: 8px;
+                background-color: white;
+                padding: 20px;
+                color: black;
+                position: absolute;
+                top: 50%;
+                z-index: 11111;
+                min-height: 500px;
+                max-height: 500px;
+                min-width: 300px;
+                display: none;
+                max-width: 300px;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                box-shadow: 5px 5px 5px rgba(82, 80, 80, 0.5), 5px 5px 5px rgba(17, 17, 17, 0.5);
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="website" id="website">
+        <!-- Navigation Starts -->
+        
+        <div class="navigation">
+                <div class="header__logo__search">
+                    <div class="text__logo" id="text__logo">
+                        <h3 class="logo__title" style="color: royalblue;">f</h3>
+                    </div>
+                    <div class="search__bar">
+                        <span><i class="fa fa-search"></i></span>
+                        <input onkeyup="search();" type="text" id="search__input" class="search__input" placeholder="Search Facebook" />
+                    </div> 
+                </div>
+                <div class="header__links">
+                    <div class="nav__link active">
+                        <span class="l9j0dhe7"><svg viewBox="0 0 28 28" class="a8c37x1j ms05siws hwsy1cff b7h9ocf4 aaxa7vy3" height="28" width="28"><path d="M25.825 12.29C25.824 12.289 25.823 12.288 25.821 12.286L15.027 2.937C14.752 2.675 14.392 2.527 13.989 2.521 13.608 2.527 13.248 2.675 13.001 2.912L2.175 12.29C1.756 12.658 1.629 13.245 1.868 13.759 2.079 14.215 2.567 14.479 3.069 14.479L5 14.479 5 23.729C5 24.695 5.784 25.479 6.75 25.479L11 25.479C11.552 25.479 12 25.031 12 24.479L12 18.309C12 18.126 12.148 17.979 12.33 17.979L15.67 17.979C15.852 17.979 16 18.126 16 18.309L16 24.479C16 25.031 16.448 25.479 17 25.479L21.25 25.479C22.217 25.479 23 24.695 23 23.729L23 14.479 24.931 14.479C25.433 14.479 25.921 14.215 26.132 13.759 26.371 13.245 26.244 12.658 25.825 12.29"></path></svg></span>
+                    </div>
+                    <div class="nav__link">
+                        <span class="tojvnm2t a6sixzi8 abs2jz4q a8s20v7p t1p8iaqh k5wvi7nf q3lfd5jv pk4s997a bipmatt0 cebpdrjk qowsmv63 owwhemhu dp1hu0rb dhp61c6y iyyx5f41"><div class="bp9cbjyn j83agx80 byvelhso l9j0dhe7"><div class="ooq845xs s44p3ltw b2mspmbn akjuzmll bub6lnnc i09qtzwb lthxh50u pmk7jnqg tkxwya3v b5ifovcx tt24zdws ms05siws flx89l3n b7h9ocf4"></div><a aria-label="Friends" class="oajrlxb2 g5ia77u1 qu0x051f esr5mh6w e9989ue4 r7d6kgcz rq0escxv nhd2j8a9 j83agx80 p7hjln8o kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x jb3vyjys rz4wbd8a qt6c0cv9 a8nywdso i1ao9s8h esuyzwwr f1sip0of lzcic4wl l9j0dhe7 abiwlrkh p8dawk7l bp9cbjyn cbu4d94t m7zwrmfr taijpn5t k4urcfbm" href="/friends/" role="link" tabindex="0"><span class="l9j0dhe7"><svg viewBox="0 0 28 28" class="a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv" height="28" width="28"><path d="M10.5 4.5c-2.272 0-2.75 1.768-2.75 3.25C7.75 9.542 8.983 11 10.5 11s2.75-1.458 2.75-3.25c0-1.482-.478-3.25-2.75-3.25zm0 8c-2.344 0-4.25-2.131-4.25-4.75C6.25 4.776 7.839 3 10.5 3s4.25 1.776 4.25 4.75c0 2.619-1.906 4.75-4.25 4.75zm9.5-6c-1.41 0-2.125.841-2.125 2.5 0 1.378.953 2.5 2.125 2.5 1.172 0 2.125-1.122 2.125-2.5 0-1.659-.715-2.5-2.125-2.5zm0 6.5c-1.999 0-3.625-1.794-3.625-4 0-2.467 1.389-4 3.625-4 2.236 0 3.625 1.533 3.625 4 0 2.206-1.626 4-3.625 4zm4.622 8a.887.887 0 00.878-.894c0-2.54-2.043-4.606-4.555-4.606h-1.86c-.643 0-1.265.148-1.844.413a6.226 6.226 0 011.76 4.336V21h5.621zm-7.122.562v-1.313a4.755 4.755 0 00-4.749-4.749H8.25A4.755 4.755 0 003.5 20.249v1.313c0 .518.421.938.937.938h12.125c.517 0 .938-.42.938-.938zM20.945 14C24.285 14 27 16.739 27 20.106a2.388 2.388 0 01-2.378 2.394h-5.81a2.44 2.44 0 01-2.25 1.5H4.437A2.44 2.44 0 012 21.562v-1.313A6.256 6.256 0 018.25 14h4.501a6.2 6.2 0 013.218.902A5.932 5.932 0 0119.084 14h1.861z"></path></svg><!--$--><span class="pmk7jnqg h5g66v2i nezaghv5"><!--$--><!--/$--></span><!--/$--></span><div class="n00je7tq arfg74bv qs9ysxi8 k77z8yql i09qtzwb n7fi1qx3 b5wmifdl hzruof5a pmk7jnqg j9ispegn kr520xx4 c5ndavph art1omkt ot9fgl3s rnr61an3" data-visualcompletion="ignore" style="border-radius:8px"></div></a></div></span>
+                    </div>
+                    
+                    <!-- <div class="nav__link">
+                        <span class="l9j0dhe7"><svg viewBox="0 0 28 28" class="a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv" height="28" width="28"><path d="M8.75 25.25C8.336 25.25 8 24.914 8 24.5 8 24.086 8.336 23.75 8.75 23.75L19.25 23.75C19.664 23.75 20 24.086 20 24.5 20 24.914 19.664 25.25 19.25 25.25L8.75 25.25ZM17.163 12.846 12.055 15.923C11.591 16.202 11 15.869 11 15.327L11 9.172C11 8.631 11.591 8.297 12.055 8.576L17.163 11.654C17.612 11.924 17.612 12.575 17.163 12.846ZM21.75 20.25C22.992 20.25 24 19.242 24 18L24 6.5C24 5.258 22.992 4.25 21.75 4.25L6.25 4.25C5.008 4.25 4 5.258 4 6.5L4 18C4 19.242 5.008 20.25 6.25 20.25L21.75 20.25ZM21.75 21.75 6.25 21.75C4.179 21.75 2.5 20.071 2.5 18L2.5 6.5C2.5 4.429 4.179 2.75 6.25 2.75L21.75 2.75C23.821 2.75 25.5 4.429 25.5 6.5L25.5 18C25.5 20.071 23.821 21.75 21.75 21.75Z"></path></svg></span>
+                    </div>
+                    <div class="nav__link">
+                        <span class="l9j0dhe7"><svg viewBox="0 0 28 28" class="a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv" height="28" width="28"><path d="M17.5 23.75 21.75 23.75C22.164 23.75 22.5 23.414 22.5 23L22.5 14 22.531 14C22.364 13.917 22.206 13.815 22.061 13.694L21.66 13.359C21.567 13.283 21.433 13.283 21.34 13.36L21.176 13.497C20.591 13.983 19.855 14.25 19.095 14.25L18.869 14.25C18.114 14.25 17.382 13.987 16.8 13.506L16.616 13.354C16.523 13.278 16.39 13.278 16.298 13.354L16.113 13.507C15.53 13.987 14.798 14.25 14.044 14.25L13.907 14.25C13.162 14.25 12.439 13.994 11.861 13.525L11.645 13.35C11.552 13.275 11.419 13.276 11.328 13.352L11.155 13.497C10.57 13.984 9.834 14.25 9.074 14.25L8.896 14.25C8.143 14.25 7.414 13.989 6.832 13.511L6.638 13.351C6.545 13.275 6.413 13.275 6.32 13.351L5.849 13.739C5.726 13.84 5.592 13.928 5.452 14L5.5 14 5.5 23C5.5 23.414 5.836 23.75 6.25 23.75L10.5 23.75 10.5 17.5C10.5 16.81 11.06 16.25 11.75 16.25L16.25 16.25C16.94 16.25 17.5 16.81 17.5 17.5L17.5 23.75ZM3.673 8.75 24.327 8.75C24.3 8.66 24.271 8.571 24.238 8.483L23.087 5.355C22.823 4.688 22.178 4.25 21.461 4.25L6.54 4.25C5.822 4.25 5.177 4.688 4.919 5.338L3.762 8.483C3.729 8.571 3.7 8.66 3.673 8.75ZM24.5 10.25 3.5 10.25 3.5 12C3.5 12.414 3.836 12.75 4.25 12.75L4.421 12.75C4.595 12.75 4.763 12.69 4.897 12.58L5.368 12.193C6.013 11.662 6.945 11.662 7.59 12.193L7.784 12.352C8.097 12.609 8.49 12.75 8.896 12.75L9.074 12.75C9.483 12.75 9.88 12.607 10.194 12.345L10.368 12.2C11.01 11.665 11.941 11.659 12.589 12.185L12.805 12.359C13.117 12.612 13.506 12.75 13.907 12.75L14.044 12.75C14.45 12.75 14.844 12.608 15.158 12.35L15.343 12.197C15.989 11.663 16.924 11.663 17.571 12.197L17.755 12.35C18.068 12.608 18.462 12.75 18.869 12.75L19.095 12.75C19.504 12.75 19.901 12.606 20.216 12.344L20.38 12.208C21.028 11.666 21.972 11.666 22.62 12.207L23.022 12.542C23.183 12.676 23.387 12.75 23.598 12.75 24.097 12.75 24.5 12.347 24.5 11.85L24.5 10.25ZM24 14.217 24 23C24 24.243 22.993 25.25 21.75 25.25L6.25 25.25C5.007 25.25 4 24.243 4 23L4 14.236C2.875 14.112 2 13.158 2 12L2 9.951C2 9.272 2.12 8.6 2.354 7.964L3.518 4.802C4.01 3.563 5.207 2.75 6.54 2.75L21.461 2.75C22.793 2.75 23.99 3.563 24.488 4.819L25.646 7.964C25.88 8.6 26 9.272 26 9.951L26 11.85C26 13.039 25.135 14.026 24 14.217ZM16 23.75 16 17.75 12 17.75 12 23.75 16 23.75Z"></path></svg><span class="pmk7jnqg h5g66v2i nezaghv5"></span></span>
+                    </div> -->
+
+                    <div class="nav__link">
+                        <span class="l9j0dhe7"><svg viewBox="0 0 28 28" class="a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv" height="28" width="28"><path d="M25.5 14C25.5 7.649 20.351 2.5 14 2.5 7.649 2.5 2.5 7.649 2.5 14 2.5 20.351 7.649 25.5 14 25.5 20.351 25.5 25.5 20.351 25.5 14ZM27 14C27 21.18 21.18 27 14 27 6.82 27 1 21.18 1 14 1 6.82 6.82 1 14 1 21.18 1 27 6.82 27 14ZM7.479 14 7.631 14C7.933 14 8.102 14.338 7.934 14.591 7.334 15.491 6.983 16.568 6.983 17.724L6.983 18.221C6.983 18.342 6.99 18.461 7.004 18.578 7.03 18.802 6.862 19 6.637 19L6.123 19C5.228 19 4.5 18.25 4.5 17.327 4.5 15.492 5.727 14 7.479 14ZM20.521 14C22.274 14 23.5 15.492 23.5 17.327 23.5 18.25 22.772 19 21.878 19L21.364 19C21.139 19 20.97 18.802 20.997 18.578 21.01 18.461 21.017 18.342 21.017 18.221L21.017 17.724C21.017 16.568 20.667 15.491 20.067 14.591 19.899 14.338 20.067 14 20.369 14L20.521 14ZM8.25 13C7.147 13 6.25 11.991 6.25 10.75 6.25 9.384 7.035 8.5 8.25 8.5 9.465 8.5 10.25 9.384 10.25 10.75 10.25 11.991 9.353 13 8.25 13ZM19.75 13C18.647 13 17.75 11.991 17.75 10.75 17.75 9.384 18.535 8.5 19.75 8.5 20.965 8.5 21.75 9.384 21.75 10.75 21.75 11.991 20.853 13 19.75 13ZM15.172 13.5C17.558 13.5 19.5 15.395 19.5 17.724L19.5 18.221C19.5 19.202 18.683 20 17.677 20L10.323 20C9.317 20 8.5 19.202 8.5 18.221L8.5 17.724C8.5 15.395 10.441 13.5 12.828 13.5L15.172 13.5ZM16.75 9C16.75 10.655 15.517 12 14 12 12.484 12 11.25 10.655 11.25 9 11.25 7.15 12.304 6 14 6 15.697 6 16.75 7.15 16.75 9Z"></path></svg><!--$--><span class="pmk7jnqg h5g66v2i nezaghv5"><!--$--><!--/$--></span><!--/$--></span>
+                    </div>
+                </div>
+                <div class="header__profile__right">
+                    <div class="rightside">
+                        <div class="profile__name">
+                            <img src="{{ user[7] }}" style="border: 3px solid royalblue;" class="post__image__01__02" />
+                            <p>{{ user[1].split(" ")[0] }}</p>
+                        </div>
+                        <div class="profile__msg msgone">
+                            <span><i class="fa fa-plus"></i></span>    
+                        </div>
+                        <div style="position: relative;" onclick="openMenu('message');" class="profile__msg message">
+                            <span><i class="fa fa-comment"></i></span>    
+                            <sup class="trim" id="count__com" for="profile__notification">20</sup>
+                        </div>
+                        
+                        <div style="position: relative;" onclick="openMenu('notification');" class="profile__notification">
+                            <span><i class="fa fa-bell"></i></span>
+                            <span class="trim" id="count__not" for="profile__notification">20</span>
+                        </div> 
+
+
+                        <a href="logout" style="text-decoration: none;color: crimson;">
+                            <div class="profile__caret">
+                                <span style="color: crimson;"><i class="fa fa-power-off"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="header__dropdown" id="header__dropdown">
+                        <div class="two__new" style="display: flex;flex-direction: row;justify-content: space-between;border-bottom: 0.2px solid lightgray;padding: 10px 15px;">
+                            <h3>Notifications</h3>
+                            <small style="color: royalblue;margin-top: 5px !important;"><i class="fa fa-circle"></i> 2 new</small>
+                        </div>
+                            <br>
+                        <div class="all__notices" id="header__dropdown__not">
+                            
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+        <!-- Navigation Ends -->
+        <!-- Content Starts -->
+        <div class="container">
+            
+            <div class="left">
+                <div class="left__bar" id="left__bar">
+                    <div class="left__bar__item">
+                        <img src="{{ user[7] }}" style="border: 3px solid royalblue;" class="post__image__01__02" />
+                        <h6>{{ user[1].split(" ")[0] }} {{ user[1].split(" ")[1][0] }}.</h6>
+                    </div>
+                    <br>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(105, 205, 245);"><i class="fa fa-users"></i></h3>
+                        <h6>Friends</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(11, 221, 99);"><i class="fa fa-signal"></i></h3>
+                        <h6>Poll</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(216, 213, 29);"><i class="fa fa-shopping-bag"></i></h3>
+                        <h6>Marketplace</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(241, 9, 67);"><i class="fa fa-video-camera"></i></h3>
+                        <h6>Watch</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(205, 6, 223);"><i class="fa fa-calendar"></i></h3>
+                        <h6>Events</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(105, 205, 245);"><i class="fa fa-star"></i></h3>
+                        <h6>Favourites</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(241, 10, 10);"><i class="fa fa-tint"></i></h3>
+                        <h6>Blood donation camps</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(15, 219, 141);"><i class="fa fa-shield"></i></h3>
+                        <h6>Covid-19 Protocols</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(219, 182, 15);"><i class="fa fa-american-sign-language-interpreting"></i></h3>
+                        <h6>Community Guidelines</h6>
+                    </div>
+                    <hr class="line__left">
+                    <br>
+                    <h3>Projects</h3>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(230, 15, 97);"><i class="fa fa-money"></i></h3>
+                        <h6>GST</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(124, 219, 15);"><i class="fa fa-shield"></i></h3>
+                        <h6>Project on Corona</h6>
+                    </div>
+                    <div class="left__bar__item">
+                        <h3 class="icon__left" style="color: rgb(243, 15, 15);"><i class="fa fa-twitter"></i></h3>
+                        <h6>Twitter Sentiment Analysis</h6>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="middle">
+
+
+                
+                <div class="post__man">
+                    <div class="post__sender">
+                            <img src="{{user[7]}}" style="border: 3px solid royalblue;" class="post__image__01" />
+                            <div class="names__post">
+                                <button onclick="triggerSignIn('sign__in__register');" type="button" class="input__btn">What's on your mind, {{ user[1].split(" ")[0] }}?</button>
+                            </div>
+                    </div>
+                    <br><br>
+                    <div class="post__footer">
+                        <div class="post__foot__item">
+                            <h3 class="icon__post__btn top__lnk__" style="color: rgb(214, 16, 43);"><i class="fa fa-video-camera"></i></h3>
+                            <h3 class="text-hde">Live</h3>
+                        </div>
+                        <div class="post__foot__item">
+                            <h3 class="icon__post__btn top__lnk__" style="color: rgb(17, 218, 17);"><i class="fa fa-photo"></i></h3>
+                            <h3 class="text-hde">Photo/Video</h3>
+                        </div>
+                        <div onclick="triggerSignIn('sign__in__register__02');" class="post__foot__item">
+                            <h3 class="icon__post__btn top__lnk__" style="color: rgb(236, 221, 11);"><i class="fa fa-smile-o"></i></h3>
+                            <h3 class="text-hde">Feeling/Activity</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- POST 1 -->
+                <div class="timeline__" id="timeline"></div>
+            </div>
+            
+            <div class="right">
+                <div class="right__bar">
+                    <h3>Sponsored</h3><br>
+                    <div class="sponsor__card">
+                        <div class="image__sponsor__card">
+                            <img src="https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/images/media/images/persuasive-ads-coca-cola.jpg" class="sponsor__image__001" alt="">
+                        </div>
+                        <div class="content__sponsor__card">
+                            <h6>Amway Fashion Art gallery</h6>
+                            <p>website.com</p>
+                        </div>
+                    </div>
+                    <hr class="line__right">
+                    <div class="contacts">
+                        <h3>Friend Requests</h3>
+                        <div class="contact__options">
+                            <span><i class="fa fa-search"></i></span>
+                            <span><i class="fa fa-ellipsis-h"></i></span>
+                        </div>
+                    </div>
+                    
+                    <div class="slide__contaact">
+                        <div class="frnd__req" id="frnd__req">
+                            <small style="margin-left: 3rem !important;">No Friends requests till now</small>
+                        </div>
+                        <br><br><br>
+                    </div>
+
+
+                    <hr class="line__right">
+                    <div class="contacts">
+                        <h3>Friends</h3>
+                        <div class="contact__options">
+                            <span><i class="fa fa-search"></i></span>
+                            <span><i class="fa fa-ellipsis-h"></i></span>
+                        </div>
+                    </div>
+                    
+                    <div class="slide__contaact">
+                        <div class="frnd__req" id="frnds__lst">
+                            <small style="margin-left: 5rem !important;">No Friends till Now</small>
+                        </div>
+                        <br><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Window Absolute Starts -->
+            <div class="chat__window">
+                <div class="heading__chat">
+                    <div class="photo__logo">
+                        <img src="img/f-icon.png" 
+                            alt=""
+                            class="chat__logo__01">
+                        <h6>Kalpana Chakraborty</h6> 
+                    </div>
+                    <div class="close__chat">
+                        <span><i class="fa fa-times"></i></span>
+                    </div>
+                </div>
+                <div class="chat__body">
+                    <div class="body__content__01">
+                        <img src="img/f-icon.png" 
+                            alt=""
+                            class="chat__logo__02">
+                        <p>Kalpana Chakraborty</p>
+                        <p>You're friends on Facebook</p>
+                        <p>Lives in Hemtabad, West Bengal, India</p>
+                        <p>Went to Kaliyaganj Parbati Sundari High School</p>
+                    </div>
+                </div>
+                <div class="chat__footer">
+                    <p><i class="fa fa-plus"></i></p>
+                    <p><i class="fa fa-image"></i></p>
+                    <p><i class="fa fa-sticky-note"></i></p>
+                    <p><i class="fa fa-clone"></i></p>
+                    <div class="chat__input">
+                        <span><i class="fa fa-font"></i></span>
+                        <input type="text" placeholder="enter message" class="input__chat" />
+                        <span><i class="fa fa-smile-o"></i></span>
+                    </div>
+                    <p><i class="fa fa-thumbs-up"></i></p>
+                </div>
+            </div>
+            <!-- Chat Window Absolute Ends -->
+            
+
+            
+        </div>
+        <!-- Content Ends -->
+    </div>
+    
+            <!-- Post Modal Starts-->
+            <div  id="sign__in__register" 
+                    class="sign__in__register">
+                <div class="modal__header">
+                    <h3>Create post</h3>
+                    <span onclick="function closeMod() {document.getElementById('sign__in__register').style.display = 'none';
+                        $('.left').css('filter','none'); 
+                        $('.middle').css('filter','none'); 
+                        $('.right').css('filter','none'); 
+                        $('.profile__notification').css('filter','none'); 
+                        $('.header__logo__search').css('filter','none'); 
+                        $('.profile__msg').css('filter','none'); 
+                        $('.header__links').css('filter','none'); 
+                        $('.message').css('filter','none'); 
+                
+                        }closeMod();"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="" style="margin-top: 1rem !important;">
+                    <div class="post__sender">
+                            <img src="{{user[7]}}" class="post__image__01" />
+                            <div class="names__post" style="margin-top: 10px !important;">
+                                <h5>{{user[1]}}</h5>
+                                <h6>Active . <i class="fa fa-globe"></i></h6>
+                            </div>
+                        </div>
+
+
+                    <br>
+                    
+                    
+                    <form action="posts" method="post" enctype="multipart/form-data">
+                        <div class="post__body">
+                            <textarea wrap="physical" name="content" placeholder="What's on your mind, {{ user[1].split(' ')[0] }}?" class="text__post"></textarea>
+                        </div>
+
+                        <br>
+                        <div class="add__to__post">
+                            <div class="flexxer">
+                                <h3>Add to you post
+                                    <span id="imagesCountPost"></span>
+                                    <span id="videosCountPost"></span>
+                                </h3>
+                                <div class="flexx__icons">
+                                    <label for="file__video">
+                                        <span style="color: rgb(230, 11, 47);"><i class="fa fa-video-camera"></i></span>
+                                        <input type="file" id="file__video" accept=".mp4,.mkv,.3GP" style="display: none" name="video[]" multiple="true" alt="upload videos" data-original-title="upload videos">
+                                    </label>
+                                    <label for="file__image">
+                                        <span style="color: rgb(56, 228, 13);"><i class="fa fa-image"></i></span>
+                                        <input type="file" id="file__image" accept=".jpg,.jpeg,.png,.svg" style="display: none" name="image[]" multiple="true" alt="upload photos" data-original-title="upload photos">
+                                    </label>
+                                    <span style="color: rgb(20, 114, 221);"><i class="fa fa-map-marker"></i></span>
+                                    <span style="color: rgb(212, 86, 14);"><i class="fa fa-user-plus"></i></span>
+                                    <span style="color: rgb(224, 228, 24);"><i class="fa fa-smile-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="post__footer__2">
+                            <button type="submit" class="btn__post">Post</button>
+                        </div>
+                    </form>
+                    <script>
+                        var insider = ""; 
+                        $('input#file__video').change(function(){
+                            var files = $(this)[0].files;
+                            insider = "Videos: "+(files.length).toString();
+                            $("#imagesCountPost").text(insider);
+                        });
+
+                        $('input#file__image').change(function(){
+                            var files = $(this)[0].files;
+                            insider = "Images: "+(files.length).toString();
+                            $("#videosCountPost").text(insider);
+                        });
+                    </script>
+
+                </div>
+            </div>
+
+            <!-- Post Modal Ends -->
+            <div  id="sign__in__register__02" 
+                    class="sign__in__register">
+                <div class="modal__header">
+                    <h3>Create post</h3>
+                    <span onclick="function closeMod() {document.getElementById('sign__in__register__02').style.display = 'none';
+                        $('.left').css('filter','none'); 
+                        $('.middle').css('filter','none'); 
+                        $('.right').css('filter','none'); 
+                        $('.profile__notification').css('filter','none'); 
+                        $('.header__logo__search').css('filter','none'); 
+                        $('.profile__msg').css('filter','none'); 
+                        $('.header__links').css('filter','none'); 
+                        $('.message').css('filter','none'); 
+                
+                        }closeMod();"><i class="fa fa-times"></i></span>
+                </div>
+                <div class="" style="margin-top: 1rem !important;">
+                    <div class="post__sender">
+                            <img src="{{user[7]}}" class="post__image__01" />
+                            <div class="names__post" style="margin-top: 10px !important;">
+                                <h5>{{user[1]}}</h5>
+                                <h6>Active . <i class="fa fa-globe"></i></h6>
+                            </div>
+                        </div>
+
+
+                    <br>
+                    
+                    
+                    <form action="posts" method="post" enctype="multipart/form-data">
+                        <div class="post__body">
+                            <textarea style="   background-image: linear-gradient(rgba(0, 0, 0, 0.534), rgba(0, 0, 0, 0.548)),url('static/back/36920094_248623919067915_1424366723364028416_n.jpg');
+                                                color: rgb(218, 217, 217) !important;
+                                                font-weight: bolder;
+                                                background-repeat: no-repeat;
+                                                background-size: cover;
+                                                font-size: 30px !important;
+                                                padding: 1px;text-align: center;
+                                                padding-top: 2rem;overflow: hidden;
+                                                " wrap="physical" name="content" placeholder="What's on your mind, {{ user[1].split(' ')[0] }}?" class="text__post"></textarea>
+                        </div>
+
+                        <br>
+                        <div class="add__to__post">
+                            <div class="flexxer">
+                                <h3>Add to you post
+                                    <span id="imagesCountPost"></span>
+                                    <span id="videosCountPost"></span>
+                                </h3>
+                                <div class="flexx__icons">
+                                    <label for="file__video">
+                                        <span style="color: rgb(230, 11, 47);"><i class="fa fa-video-camera"></i></span>
+                                        <input type="file" id="file__video" accept=".mp4,.mkv,.3GP" style="display: none" name="video[]" multiple="true" alt="upload videos" data-original-title="upload videos">
+                                    </label>
+                                    <label for="file__image">
+                                        <span style="color: rgb(56, 228, 13);"><i class="fa fa-image"></i></span>
+                                        <input type="file" id="file__image" accept=".jpg,.jpeg,.png,.svg" style="display: none" name="image[]" multiple="true" alt="upload photos" data-original-title="upload photos">
+                                    </label>
+                                    <span style="color: rgb(20, 114, 221);"><i class="fa fa-map-marker"></i></span>
+                                    <span style="color: rgb(212, 86, 14);"><i class="fa fa-user-plus"></i></span>
+                                    <span style="color: rgb(224, 228, 24);"><i class="fa fa-smile-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="post__footer__2">
+                            <button type="submit" class="btn__post">Post</button>
+                        </div>
+                    </form>
+                    <script>
+                        var insider = ""; 
+                        $('input#file__video').change(function(){
+                            var files = $(this)[0].files;
+                            insider = "Videos: "+(files.length).toString();
+                            $("#imagesCountPost").text(insider);
+                        });
+
+                        $('input#file__image').change(function(){
+                            var files = $(this)[0].files;
+                            insider = "Images: "+(files.length).toString();
+                            $("#videosCountPost").text(insider);
+                        });
+                    </script>
+
+                </div>
+            </div>
+            <!-- Toast Div Starts -->
+            <div class="toast" id="toast">
+                <h1 id="toast__text">Request Sent</h1>
+            </div>
+            <!-- Toast Div Ends -->
+
+    
+    
+    <!-- Context Search bar -->
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script>
+        function back(){
+            var context = `
+                        <div class="left__bar__item"><img src="{{ user[7] }}" class="post__image__01__02" /><h6>{{ user[1].split(" ")[0] }} {{ user[1].split(" ")[1][0] }}.</h6></div><br><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(105, 205, 245);"><i class="fa fa-users"></i></h3><h6>Friends</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(11, 221, 99);"><i class="fa fa-signal"></i></h3><h6>Poll</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(216, 213, 29);"><i class="fa fa-shopping-bag"></i></h3><h6>Marketplace</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(241, 9, 67);"><i class="fa fa-video-camera"></i></h3><h6>Watch</h6> </div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(205, 6, 223);"><i class="fa fa-calendar"></i></h3><h6>Events</h6> </div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(105, 205, 245);"><i class="fa fa-star"></i></h3><h6>Favourites</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(241, 10, 10);"><i class="fa fa-tint"></i></h3><h6>Blood donation camps</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(15, 219, 141);"><i class="fa fa-shield"></i></h3><h6>Covid-19 Protocols</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(219, 182, 15);"><i class="fa fa-american-sign-language-interpreting"></i></h3><h6>Community Guidelines</h6></div><hr class="line__left"><br><h3>Projects</h3><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(230, 15, 97);"><i class="fa fa-money"></i></h3><h6>GST</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(124, 219, 15);"><i class="fa fa-shield"></i></h3><h6>Project on Corona</h6></div><div class="left__bar__item"><h3 class="icon__left" style="color: rgb(243, 15, 15);"><i class="fa fa-twitter"></i></h3><h6>Twitter Sentiment Analysis</h6></div>
+                    `;
+
+            document.getElementById("left__bar").innerHTML = context;
+            document.getElementById("text__logo").innerHTML = `<h3 class="logo__title" style="color: royalblue;">facebook</h3>`;
+        }
+        $(document).ready(function() {
+            $(function() {
+                $.ajax({
+                    url: '/utilities',
+                    success: function(data) {
+                        var stats = Object(data);
+                        document.getElementById("count__not").innerHTML = stats["notification"];
+                        document.getElementById("count__com").innerHTML = stats["message"];
+                    }
+                })
+            });
+            if(localStorage.getItem("FacebookClone")==null){
+                localStorage.setItem("FacebookClone",["{{user[2]}}","{{user[3]}}","{{user[1]}}","{{user[4]}}","{{user[5]}}","111111","{{user[7]}}"]);
+            }else{
+                localStorage.setItem("FacebookClone",["{{user[2]}}","{{user[3]}}","{{user[1]}}","{{user[4]}}","{{user[5]}}","111111","{{user[7]}}"]);
+            }
+            var dx = localStorage.getItem("FacebookClone").split(",");
+            if(dx[7]===undefined){
+                dx.push("{{user[7]}}");
+                localStorage.setItem("FacebookClone",dx);
+            } 
+        });
+    </script>
+    <script>
+         $(function() {
+                    $.ajax({
+                        url: '/getfriendrequests',
+                        success: function(data) {
+                            var friends = Object(data);
+                            var fnd = "";
+                            for (let i = 0; i < friends["allfriendrequests"].length; i++) {
+                                fnd += `
+                                    <div class="friends__link">
+                                            <img src="`+friends["allfriendrequests"][i][7]+`" alt="" class="friend__001" />
+                                            <h5>`+friends["allfriendrequests"][i][1].split(" ")[0]+`</h5>    
+                                            <h5 onclick="requestsFriends('accept','`+friends["allfriendrequests"][i][0]+`');" style="color: blue;margin-top: -2px !important;margin-left: 3px !important;" class="profile__msg"><i class="fa fa-thumbs-up"></i><h5>
+                                            <h5 onclick="requestsFriends('reject','`+friends["allfriendrequests"][i][0]+`');" style="color: crimson;margin-top: -2px !important;" class="profile__msg"><i class="fa fa-thumbs-down"></i><h5>
+                                                </div>
+                                `;
+                            }
+                            if(fnd.length==0){
+                                fnd=`<small style="margin-left: 3rem !important;margin-top: 3rem !important;">No Friends requests till now</small>`;
+                            }
+                            document.getElementById("frnd__req").innerHTML = fnd;
+                        }
+                    })
+                });
+    </script>
+    <script>
+         $(function() {
+                    $.ajax({
+                        url: '/getfriends',
+                        success: function(data) {
+                            var friends_ = Object(data);
+                            var fnd = "";
+                            for (let i = 0; i < friends_["allfriendrequests"].length; i++) {
+                                fnd += `
+                                    <div class="friends__link__02">
+                                            <img src="`+friends_["allfriendrequests"][i][7]+`" alt="" class="friend__001" />
+                                            <h5>`+friends_["allfriendrequests"][i][1]+`</h5>    
+                                    </div>
+                                `;
+                            }
+                            if(fnd.length==0){
+                                fnd=`<small style="margin-left: 3rem !important;margin-top: 3rem !important;">No Friends till now</small>`;
+                            }
+                            document.getElementById("frnds__lst").innerHTML = fnd;
+                        }
+                    })
+                });
+    </script>
+    <script>
+        function openMenu(id){
+            if(id==="notification"){
+                $(function() {
+                    $.ajax({
+                        url: '/getnotification',
+                        success: function(data) {
+                            var notify = "";
+                            var stats = Object(data);
+
+                            for (let i = 0; i < stats["allnotifications"].length; i++) {
+                                notify += `
+                                    <div class="two__new__notices" style="display: flex;flex-direction: row;justify-content: space-between;padding: 10px 15px;">
+                                        <img src="static/img/f-icon.png" class="post__image__01__02" style="margin-top: 2px !important;" />
+                                        <small style="color: royalblue;margin-top: 0px !important;">`+stats["allnotifications"][i][6]+`</small>
+                                    </div>
+                                `;
+                            }
+                            
+
+                            // header__dropdown
+                            document.getElementById("header__dropdown").style.display = "block";
+                            document.getElementById("header__dropdown__not").innerHTML = notify;
+                            $(".website").mouseup(function(e) {   
+                                // document.getElementById("header__dropdown").style.display = "none";
+                                if ( $(e.target).closest("#header__dropdown").length === 0 ) {
+                                    $("#header__dropdown").hide(); 
+                                }
+                            });
+
+                        }
+                    })
+                });
+                $(function() {
+                    $.ajax({
+                        url: '/updateSeen/notification',
+                        success: function(data) {
+                            var stats = Object(data);
+                            document.getElementById("count__not").innerHTML = stats["notification"];
+                        }
+                    })
+                });
+            }
+            else if(id==="message"){
+
+            }
+        }
+    </script>
+    <script>
+        function expandComment(id){
+
+            document.getElementById("comment-section-"+id).style.display="block";
+            document.getElementById("messages-"+id).style.display="block";
+            load(id);
+        }
+        function submitComment(id){
+            console.log(document.getElementById("comment-"+id).value);
+            document.getElementById("btn-"+id).innerHTML = "Uploading";
+            
+            load(id);
+            $.post("uploadComment",{
+                message: document.getElementById("comment-"+id).value,
+                from: id,
+                
+            });
+            load(id);
+            document.getElementById("btn-"+id).innerHTML = "Post";
+            $("#comment-"+id).val('');
+            return false;
+
+        }
+        function load(id){
+            $.get("getComment/"+id,function(result) {
+                $("#messages-"+id).empty();
+                if(result["message"]){
+                    result["message"].forEach(item => {
+                        $("#messages-"+id).append(renderNessage(item));
+                    })
+                }
+                load(id);
+            })
+        }
+        function renderNessage(item){
+            return `<div class="friends__link__02" style="margin-top: 10px;margin-bottom: 10px;">
+                        <img src="`+item[5]+`" alt="" style="border: 5px solid pink;" class="friend__001">
+                        <h5>`+item[1]+`</h5>    
+                    </div>`;
+        }
+         $(function() {
+                    $.ajax({
+                        url: '/timeline',
+                        success: function(data) {
+                            var stats = Object(data);
+                            var timeline = "";
+                            for (let i = 0; i < stats["timeline"].length; i++) {
+                                timeline += `
+                                    <div class="post">
+                                        <div class="post__heading">
+                                            <div class="post__sender">
+                                                <img src="`+stats["timeline"][i][24]+`" class="post__image__01" />
+                                                <div class="names__post">
+                                                    <h5>`+stats["timeline"][i][23]+`</h5>
+                                                    <h6>`+stats["timeline"][i][16]+` : `+stats["timeline"][i][17]+` . <i class="fa fa-globe"></i></h6>
+                                                </div>
+                                            </div>
+                                            <div class="post__options">
+                                                <span><i class="fa fa-ellipsis-h"></i></span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <br>
+                                        <div class="post__text__content">
+                                            <p>`+stats["timeline"][i][15]+`</p>
+                                        </div>
+                                            <div class="row"><div class="row_posters post__image__content">
+                                        `;
+
+                                if(stats["timeline"][i][2]==="True"){
+                                    for (let j = 0; j < stats["timeline"][i][9].split(",").length; j++) {
+                                        timeline += `
+                                                <img src="`+stats["timeline"][i][9].split(",")[j]+`" class="row_poster post__image__02" />
+                                        `;    
+                                    }  
+                                }
+                                timeline += "</div></div>"+`<div class="row"><div class="row_posters post__image__content">`;
+
+                                if(stats["timeline"][i][3]==="True"){
+                                    for (let j = 0; j < stats["timeline"][i][9].split(",").length; j++) {
+                                        timeline += `
+                                                <video class="post__image__02 row_poster" controls>
+                                                    <source src="`+stats["timeline"][i][10].split(",")[j]+`" type="video/mp4">
+                                                    <source src="`+stats["timeline"][i][10].split(",")[j]+`" type="video/ogg">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                        `;    
+                                    }  
+                                }
+                                timeline += "</div></div>";
+
+                                timeline += `<div class="post__analytics">
+                                            <div class="like__emoj">
+                                                <p><span style="color: white;">Likes: </span> `+stats["timeline"][i][19]+`</p>
+                                            </div>
+                                            <div class="comment__share">
+                                                <p>147 comments `+stats["timeline"][i][21]+` shares</p>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <hr>
+                                        <div class="post__footer">
+                                            <div class="post__foot__item">
+                                                <h3 class="icon__post__btn"><i class="fa fa-thumbs-up"></i></h3>
+                                                <h3>Like</h3>
+                                            </div>
+                                            <div class="post__foot__item" onClick="expandComment('`+stats["timeline"][i][0]+`');">
+                                                <h3 class="icon__post__btn"><i class="fa fa-comment"></i></h3>
+                                                <h3>Message</h3>
+                                            </div>
+                                            <div class="post__foot__item">
+                                                <h3 class="icon__post__btn"><i class="fa fa-share"></i></h3>
+                                                <h3>Share</h3>
+                                            </div>
+                                        </div>
+                                        <div style="display:none;margin-top: 1rem !important;" id="comment-section-`+stats["timeline"][i][0]+`" class="comment-section" >
+                                            
+                                                <div style="display:flex;flex-direction: row;">
+                                                    <img src="{{user[7]}}" class="post__image__01" style="margin-top: 10px !important;" />
+                                                    <div style="display:flex;flex-direction: row;justify-content: space-between;width: 100%;">
+                                                        <input id="comment-`+stats["timeline"][i][0]+`" style="text-align: center;background: #292a2e63;border: none;outline:none;width:100%;padding-top: 20px;border-radius: 5px;padding-bottom: 20px;color: white;font-size: 17px;" type="text" class="comment__Box" placeholder="Enter your comment here" />
+                                                        <button id="btn-`+stats["timeline"][i][0]+`" onClick="submitComment('`+stats["timeline"][i][0]+`');" style="background-color: royalblue;width: 50%;border: none;outline: none;color: white;">Post</button>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-top: 10rem; !important" >
+                                                    <div id="messages-`+stats["timeline"][i][0]+`"></div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                            document.getElementById("timeline").innerHTML = timeline;
+                        }
+                    })
+                });
+    </script>
+</body>
+</html>

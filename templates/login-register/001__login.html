@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='/img/f-icon.png') }}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <title>Facebook | Login | Register</title>
+  </head>
+  <body>
+      
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="left__content">
+                        <h1 class="company">facebook</h1>
+                        <h3 class="subcompany">Recent Logins</h3>
+                        <p class="subcat">Click your picture or add an account</p>
+                        <div class="grid">
+                            <div class="card__box shadow">
+                                <div class="back__img" id="image__Set" style="background-image: url('https://scontent.fagr1-1.fna.fbcdn.net/v/t1.0-1/c0.62.160.160a/p160x160/80229651_2525866951072313_1242099370862575616_o.jpg?_nc_cat=107&ccb=2&_nc_sid=dbb9e7&_nc_ohc=5mtpJ6ZVF98AX-AZxNd&_nc_ht=scontent.fagr1-1.fna&tp=27&oh=c9d391b72087d8048a3b91444f00399a&oe=603FE810');"></div>
+                                <div class="base__name" id="name__Set"></div>
+                            </div>
+                            <div class="card__box shadow">
+                                <div class="plus"><i class="fa fa-plus"></i></div>
+                                <div class="base__name" style="color: royalblue;">Add Account</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" id="forms">
+                    <div class="card shadow-lg cardX" id="forms01">
+                        <form action="loginhandle" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <input name="email__l" placeholder="Email address or mobile number" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <input name="password__l" placeholder="Password" type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-block btn-primary">Login</button>
+                            </div>
+                            <div class="mb-3 text-center padding__line">
+                                <a class="text-center" style="text-decoration: none;" href="#">Forget Password?</a>
+                                <br><br>
+                                <hr>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <br>
+                                <button id="register" class="btn btn-smal text-center btn-success">Create Account</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card shadow-lg cardX" id="forms02">
+                        <form id="registeration" method="post">
+                            <div class="row__grid">
+                                <div class="mb-3 col__frid">
+                                    <input  placeholder="Firstname" 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="firstname" aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <input  placeholder="Surname" 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="surname" aria-describedby="emailHelp">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input  placeholder="Email address or mobile number" 
+                                        type="email" 
+                                        class="form-control" 
+                                        id="email" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <input  placeholder="Password" 
+                                        type="password" 
+                                        class="form-control" 
+                                        id="password" aria-describedby="emailHelp">
+                            </div>
+                            <div class="row__grid">
+                                <div class="mb-3 col__frid">
+                                    <input  type="date" 
+                                            class="form-control" placeholder="Date Of Birth"
+                                            id="dob" aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <select id="gender" class="form-select" aria-label="Default select example">
+                                        <!-- <option selected>Gender</option> -->
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="custom">Custom</option>
+                                    </select>    
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-block btn-primary">Register</button>
+                            </div>
+                            <div class="mb-3 text-center padding__line">
+                                
+                                <hr>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <br>
+                                <button id="login" class="btn btn-smal text-center btn-success">Have Account</button>
+                            </div>
+                        </form>
+                    </div>
+                    <br>
+                    <h6 id="text__page" class="text-right"><b>Create a Page</b> for a celebrity, band or business.</h6>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cirlce shadow-sm">
+            <h1><i class="fa fa-question"></i></h1>
+        </div>
+    
+    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+                var dx = localStorage.getItem("FacebookClone").split(",");
+                document.getElementById("image__Set").style.backgroundImage =  "url('"+dx[7]+"')";
+                document.getElementById("name__Set").innerHTML =  dx[2].split(" ")[0];
+            });
+        </script>
+        <script>
+            $("#register").click(function(e){
+                e.preventDefault();
+                document.getElementById("forms01").style.display = "none";
+                document.getElementById("forms02").style.display = "block";
+                document.getElementById("text__page").style.display = "none";
+                
+            });
+
+            $("#login").click(function(e){
+                e.preventDefault();
+                document.getElementById("forms01").style.display = "block";
+                document.getElementById("forms02").style.display = "none";
+                document.getElementById("text__page").style.display = "block";
+                
+            });
+        </script>
+        <script>
+            function makeid(length) {
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            }
+            $("#registeration").submit(function(e){
+                e.preventDefault();
+                var email = $("#email").val();
+                var psk = $("#password").val();
+                var name = $("#firstname").val() + " " + $("#surname").val();;
+                var dob = $("#dob").val();
+                var gender = $("#gender").val();
+                var otp = "624982";
+                localStorage.setItem("FacebookClone",[email,psk,name,dob,gender,otp]);
+                window.location.replace("/otpVerification/"+makeid(500));
+            });
+            
+
+        </script>
+    </body>
+</html>
